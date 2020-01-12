@@ -1,8 +1,11 @@
 'use strict'
 
+var intcode = require('./intcode.js');
 let fs = require('fs');
+let ImageJS = require("imagejs");
 let file = './AOC.txt';
 let input = fs.readFileSync(file, 'utf8').split('\r\n');
+//let input = fs.readFileSync(file, 'utf8').split(',').map(v => parseInt(v));
 
 
 /************* FIRST TASK *************/

@@ -64,6 +64,7 @@ module.exports.compute = function* (iProgram) {
       case 3:
         //console.log('requesting input');
         iProgram[aIndex] = yield;
+        //console.log(iProgram[aIndex]);
         i += 2;
         break;
       /* Opcode 4 outputs the value of its only parameter. For example, the instruction 4,50 would output the value at address 50. */
