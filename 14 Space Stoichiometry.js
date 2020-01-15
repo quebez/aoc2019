@@ -64,17 +64,23 @@ let getFuel = (obj, x) => {
 }
 
 /************* SECOND TASK *************/
-// TODO: bruteforce '-'
 let second = (obj) => {
-  let current;
-  let i = 2267400;
+  let r = 1;
 
-  while (true) {
-    current = getFuel(obj, i);
-    //console.log(1000000000000 - current);
-    if (1000000000000 - current < 0) return i - 1;
-    i++;
+  while (1000000000000 - getFuel(obj, r) > 0) r *= 10;
+  r = (r / 10).toString().split('').map(v => parseInt(v));
+
+  for (let i = 0; i < r.length; i++) {
+    for (let j = 0; j < 10; j++) {
+      if (1000000000000 - getFuel(obj, parseInt(r.join(''))) < 0) {
+        r[i] -= 1;
+        break;
+      }
+      r[i] += 1;
+    }
   }
+
+  return r.join('');
 }
 
 /* Helpers for 2nd task */
