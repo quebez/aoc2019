@@ -40,6 +40,7 @@ let first = (arr) => {
             if (steps >= 1) return ++steps;
           } else {
             // I found the oxygen tank!
+            console.log(curLoc.x, curLoc.y);
             pg.setPixel(curLoc.x, curLoc.y, red);
             pg.writeFile("15.jpg", { quality: 100 });
             return 1;
@@ -64,10 +65,10 @@ let first = (arr) => {
 let getLoc = (xy, direction) => {
   if (xy.x <= 0 || xy.y <= 0) throw 'too small map!';
   switch (direction) {
-    case 1: return { x: xy.x, y: xy.y - 1 };
-    case 2: return { x: xy.x, y: xy.y + 1 };
-    case 3: return { x: xy.x - 1, y: xy.y };
-    case 4: return { x: xy.x + 1, y: xy.y };
+    case 1: return { x: xy.x, y: xy.y - 1 }; // N
+    case 2: return { x: xy.x, y: xy.y + 1 }; // S
+    case 3: return { x: xy.x - 1, y: xy.y }; // W
+    case 4: return { x: xy.x + 1, y: xy.y }; // E
   }
 }
 
@@ -82,11 +83,37 @@ let getOppositeDir = d => {
 
 /************* SECOND TASK *************/
 let second = (arr) => {
+  let max = 0;
 
+  let r = (loc, minutes, fromDir) => {
+    let possibleDirs = getPossibleDirs(loc, fromDir);
+    if (possibleDirs.lenght == 0) return minutes;
+
+    for (let i = 0; i < possibleDirs.length; i++) {
+      let p = r(getLoc(loc, possibleDirs[i]), minutes + 1, getOppositeDir(possibleDirs[i]));
+      if (p > max) max = p;
+    }
+
+    return minutes;
+  }
+
+  r({ x: 39, y: 39 }, 0, 0);
+  return max;
 }
 
 /* Helpers for 2nd task */
 
+let getPossibleDirs = (loc, fromDir) => {
+  let possibleDirs = [];
+
+  for (let i = 1; i < 5; i++) {
+    if (i != fromDir && isPath(getLoc(loc, i))) possibleDirs.push(i);
+  }
+
+  return possibleDirs;
+}
+
+let isPath = xy => pg.getPixel(xy.x, xy.y).g == 255;
 
 
 /* OUT */
